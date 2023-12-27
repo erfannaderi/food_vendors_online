@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager, UserManager
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager
 from django.db.models import OneToOneField
 
 
@@ -86,3 +86,5 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
