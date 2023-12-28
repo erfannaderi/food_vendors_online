@@ -1,6 +1,8 @@
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.db.models import OneToOneField
+# from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
@@ -21,21 +23,31 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, first_name, last_name, username, email, password=None):
+        # extra_fields.setdefault("is_staff", True),
+        # extra_fields.setdefault("is_superuser", True),
+        # extra_fields.setdefault("is_active", True),
+        # extra_fields.setdefault("is_admin", True),
+        # if extra_fields.get("is_staff") is not True:
+        #     raise ValueError("Superuser must have is_staff=True.")
+        # if extra_fields.get("is_superuser") is not True:
+        #     raise ValueError("Superuser must have is_superuser=True.")
         user = self.create_user(
-            email=self.normalize_email(email),
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
+            first_name,
+            last_name,
+            username,
+            email,
+            password,
         )
         user.is_admin = True
         user.is_active = True
         user.is_staff = True
-        user.is_superadmin = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
 
-class User(AbstractBaseUser):
+# always use permission mixin
+class User(AbstractBaseUser, PermissionsMixin):
     RESTAURANT = 1
     CLIENT = 2
     ROLE_CHOICE = ((RESTAURANT, 'RESTAURANT'), (CLIENT, "CLIENT"))
@@ -45,7 +57,7 @@ class User(AbstractBaseUser):
     email = models.CharField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=14, blank=True)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, blank=True, null=True)
-    # requierded fields
+    # required fields
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -53,7 +65,7 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    is_superadmin = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
@@ -86,5 +98,3 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
-
-

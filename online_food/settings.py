@@ -70,6 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'online_food.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -128,3 +129,4 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
+#login redirect here
