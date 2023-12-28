@@ -2,12 +2,15 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.db.models import OneToOneField
+
+
 # from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
 class UserManager(BaseUserManager):
-    def create_user(self, first_name, last_name, username, email, password=None):
+    def create_user(self, first_name: str, last_name: str, username: str, email: str, password: str = None) -> 'User':
+        # Check for required fields
         if not email:
             raise ValueError("Please provide an email address")
         if not username:
@@ -22,7 +25,8 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, last_name, username, email, password=None):
+    def create_superuser(self, first_name: str, last_name: str, username: str, email: str,
+                         password: str = None) -> 'User':
         # extra_fields.setdefault("is_staff", True),
         # extra_fields.setdefault("is_superuser", True),
         # extra_fields.setdefault("is_active", True),
@@ -71,13 +75,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
     objects = UserManager()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.email
 
-    def has_perm(self, perm, obj=None):
+    def has_perm(self, perm: str, obj=None) -> bool:
         return self.is_admin
 
-    def has_module_perms(self, app_label):
+    def has_module_perms(self, app_label: str) -> bool:
         return True
 
 
