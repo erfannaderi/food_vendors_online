@@ -78,7 +78,7 @@ class RegisterRestaurantView(TemplateView):
             restaurant.user = user
             user_profile = user.objects.get(user=user)
 
-            resturant.user_profile = user_profile
+            # resturant.user_profile = user_profile.
         else:
             return render(request, self.template_name, {'client_form': client_form, 'restaurant_form': restaurant_form})
 
