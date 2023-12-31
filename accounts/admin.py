@@ -3,7 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 from accounts.models import User, UserProfile
 
 
-# Register your models here.
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'is_active', 'first_name', 'last_name')
     ordering = ('-created_date',)
@@ -13,4 +12,10 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(UserProfile, )
+
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    # Define the fields to be displayed in the admin interface
+    # list_display = ('user', 'date_of_birth', 'phone_number', 'address')
+    pass
