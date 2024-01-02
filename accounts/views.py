@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -153,3 +154,15 @@ def register_restaurant(request):
         "restaurant_form": restaurant_form
     }
     return render(request, 'accounts/register-restaurant.html', context)
+
+
+class MyLoginView(LoginView):
+    redirect_authenticated_user = True
+    template_name = 'accounts/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('homepage')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid username or password')
+        return self.render_to_response(self.get_context_data(form=form))
