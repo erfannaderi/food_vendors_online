@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card my-5">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Log in to your account</h2>
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <small class="text-danger">{{ field.errors|striptags }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+                        </form>
+                        <ul class="error-list">
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <li class="error" style="color: red">{{ error }}</li>
+                                    {% endfor %}
+
+                                {% endif %}
+                            {% endfor %}
+                            <li class="error"
+                                style="color: red">{{ form.non_field_errors }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
