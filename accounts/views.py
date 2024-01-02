@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, CreateView
 from accounts.forms import RegisterClientForm
-from accounts.models import User
+from accounts.models import User, UserProfile
 from vendor.forms import RestaurantForm
 
 
@@ -25,7 +25,8 @@ from vendor.forms import RestaurantForm
 #             username = form.cleaned_data['username']
 #             email = form.cleaned_data['email']
 #             password = form.cleaned_data['password']
-#             user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
+#             user = User.objects.create_user
+#             <-(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
 #             user.role = User.CLIENT
 #             user.save()
 #             messages.success(request, "Successfully created a new user")
@@ -57,7 +58,8 @@ from vendor.forms import RestaurantForm
 #             username = form.cleaned_data['username']
 #             email = form.cleaned_data['email']
 #             password = form.cleaned_data['password']
-#             user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email,
+#             user = User.objects.create_user
+#             <-(first_name=first_name, last_name=last_name, username=username, email=email,
 #                                             password=password)
 #             user.role = User.CLIENT
 #             user.save()
@@ -120,5 +122,34 @@ class RegisterClientView(CreateView):
         return super().form_valid(form)
 
 
-class RegisterRestaurantView(CreateView):
-    pass
+def register_restaurant(request):
+    if request.method == 'POST':
+        client_form = RegisterClientForm(request.POST)
+        restaurant_form = RestaurantForm(request.POST, request.FILES)
+        if client_form.is_valid() and restaurant_form.is_valid:
+            first_name = client_form.cleaned_data['first_name']
+            last_name = client_form.cleaned_data['last_name']
+            username = client_form.cleaned_data['username']
+            email = client_form.cleaned_data['email']
+            password = client_form.cleaned_data['password']
+            user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email,
+                                            password=password)
+            user.role = User.RESTAURANT
+            user.save()
+            # we need to add user and userprofile to the restaurant
+            restaurant = restaurant_form.save(commit=False)
+            restaurant.user = user
+            user_profile = UserProfile.objects.get(user=user)
+            restaurant.user_profile = user_profile
+            restaurant.save()
+            messages.success(request, "Restaurant saved successfully")
+            return redirect(reverse_lazy('register_restaurant'))
+
+    else:
+        client_form = RegisterClientForm()
+        restaurant_form = RestaurantForm()
+    context = {
+        "client_form": client_form,
+        "restaurant_form": restaurant_form
+    }
+    return render(request, 'accounts/register-restaurant.html', context)
