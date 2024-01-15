@@ -1,16 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils.http import urlsafe_base64_decode
 from django.views import View
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import CreateView
 from accounts.forms import RegisterClientForm
 from accounts.models import User, UserProfile
-from accounts.utils import detect_user
+from accounts.utils import detect_user, send_verification_email
 from vendor.forms import RestaurantForm
 
 
@@ -118,7 +120,6 @@ class RegisterClientView(CreateView):
     form_class = RegisterClientForm
     template_name = 'accounts/register-client.html'
     success_url = reverse_lazy('register_client')
-    3
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -130,6 +131,8 @@ class RegisterClientView(CreateView):
         user = form.save(commit=False)
         user.role = User.CLIENT
         user.save()
+        # send verification email
+        send_verification_email(self.request, user)
         messages.success(self.request, "Successfully created a new user")
         return super().form_valid(form)
 
@@ -160,6 +163,8 @@ def register_restaurant(request):
                 user_profile = UserProfile.objects.get(user=user)
                 restaurant.user_profile = user_profile
                 restaurant.save()
+                # send verification
+                send_verification_email(request, user)
                 messages.success(request, "Restaurant saved successfully")
                 return redirect(reverse_lazy('register_restaurant'))
 
@@ -172,6 +177,22 @@ def register_restaurant(request):
         }
         return render(request, 'accounts/register-restaurant.html', context)
 
+
+def activate(request, uidb64, token):
+    # activate the account by setting the is_active=True
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User._default_manager.get(pk=uid)
+    except(ValueError, TypeError, KeyError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, "account activated")
+        return redirect('my_account')
+    else :
+        messages.error(request, "invalid or expired activation link")
+        return redirect('homepage')
 
 class MyLoginView(LoginView):
     redirect_authenticated_user = True

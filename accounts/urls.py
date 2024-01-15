@@ -2,7 +2,7 @@
 from django.urls import path
 
 from accounts.views import RegisterClientView, register_restaurant, MyLoginView, CustomLogoutView, \
-    restaurant_dashboard, client_dashboard, my_account
+    restaurant_dashboard, client_dashboard, my_account, activate
 
 # from .views import RegisterClientView, RegisterRestaurantView
 
@@ -16,4 +16,5 @@ urlpatterns = [
     path('login/', MyLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     # path('dashboard/', dashboard, name='dashboard'),
+    path('activate/<uidb64>/<token>/', activate, name='activate'),
 ]

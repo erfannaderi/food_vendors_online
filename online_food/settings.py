@@ -30,6 +30,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,10 +133,23 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
-# login redirect here
+# login redirects here
 
 # from django.contrib.messages import constants as messages
 #
 # MESSAGE_TAGS = {
 #     messages.ERROR: 'danger',
 # }
+
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # or 'optional'
+# ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+# email configurations
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE = config('EMAIL_USE', default=True, cast=bool)
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+# EMAIL_USE_TLS = config('EMAIL_USE', cast=bool)
+DEFAULT_EMAIL = "Online Food <django.erfan@gmail.com>"
