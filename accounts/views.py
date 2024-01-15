@@ -1,7 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import LoginView
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -199,11 +200,29 @@ def my_account(request):
     return redirect(redirect_url)
 
 
+# restrict vendor to access a client
+def check_role_vendor(user):
+    if user.role == 1:
+        return True
+    else:
+        raise PermissionDenied
+
+
+# restrict a client to access vendor
+def check_role_client(user):
+    if user.role == 2:
+        return True
+    else:
+        raise PermissionDenied
+
+
 @login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def restaurant_dashboard(request):
     return render(request, 'restaurant_dashboard.html')
 
 
 @login_required(login_url='login')
+@user_passes_test(check_role_client)
 def client_dashboard(request):
     return render(request, 'client_dashboard.html')
