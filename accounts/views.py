@@ -14,6 +14,7 @@ from accounts.forms import RegisterClientForm
 from accounts.models import User, UserProfile
 from accounts.utils import detect_user, send_verification_email
 from vendor.forms import RestaurantForm
+from vendor.models import Vendor
 
 
 # Create your views here.
@@ -245,13 +246,13 @@ def check_role_client(user):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def restaurant_dashboard(request):
-    return render(request, 'restaurant_dashboard.html')
+    return render(request, 'accounts/restaurant-dashboard.html')
 
 
 @login_required(login_url='login')
 @user_passes_test(check_role_client)
 def client_dashboard(request):
-    return render(request, 'client_dashboard.html')
+    return render(request, 'accounts/client_dashboard.html')
 
 
 def forgot_password(request):

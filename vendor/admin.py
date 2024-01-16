@@ -2,15 +2,10 @@ from django.contrib import admin
 from vendor.models import Vendor
 
 
-# Register your models here.
-@admin.register(Vendor)
 class VendorAdmin(admin.ModelAdmin):
-    date_hierarchy = 'modified_at'
-    empty_value_display = "-empty-"
+    list_display = ('user', 'vendor_name', 'is_approved', 'created_at')
+    list_display_links = ('user', 'vendor_name')
+    list_editable = ('is_approved',)
 
-# class AuthorAdmin(admin.ModelAdmin):
-#     list_display = ["name", "title", "view_birth_date"]
-#
-#     @admin.display(empty_value="???")
-#     def view_birth_date(self, obj):
-#         return obj.birth_date
+
+admin.site.register(Vendor, VendorAdmin)

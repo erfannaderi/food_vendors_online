@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('vendor_name', models.CharField(max_length=50)),
-                ('vendor_license', models.ImageField(upload_to='vender/license')),
+                ('vendor_license', models.ImageField(upload_to='vendor/license')),
                 ('is_approved', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now=True)),

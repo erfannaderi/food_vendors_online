@@ -1,0 +1,8 @@
+{% autoescape off %}
+    {% if is_approved %}
+        hello there {{ user.first_name }},
+        Your Restaurant is approved you are ready to roll
+    {% else %}
+        Sorry we are unable to work with your restaurant at this time
+    {% endif %}
+{% endautoescape %}
