@@ -205,11 +205,15 @@ class MyLoginView(LoginView):
     template_name = 'accounts/login.html'
 
     def get_success_url(self):
+        messages.success(self.request, 'Login successfully')
         return reverse_lazy('my_account')
 
     def form_invalid(self, form):
         messages.error(self.request, 'Invalid username or password')
         return self.render_to_response(self.get_context_data(form=form))
+
+
+
 
 
 class CustomLogoutView(View):
@@ -292,7 +296,7 @@ def reset_password(request):
     if request.method == 'POST':
         password = request.POST['password']
         confrim_password = request.POST['confirm_password']
-        if password == confrim_password :
+        if password == confrim_password:
             pk = request.session.get('uid')
             user = User.objects.get(pk=pk)
             user.set_password(password)
@@ -301,6 +305,6 @@ def reset_password(request):
             messages.success(request, 'Password was updated successfully')
             return redirect('login')
         else:
-            messages.error(request,"Password not equeal")
+            messages.error(request, "Password not equeal")
             return redirect('reset_password')
     return render(request, 'accounts/reset_password.html')

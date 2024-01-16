@@ -7,7 +7,7 @@
                 <div class="card my-5">
                     <div class="card-body">
                         <h2 class="text-center mb-4">Log in to your account</h2>
-                        <form method="post" novalidate>
+                        <form method="POST" novalidate>
                             {% csrf_token %}
                             {% for field in form %}
                                 <div class="form-group">
