@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-    'vendor'
+    'vendor',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'accounts.context_processors.get_google_api',
                 'accounts.context_processors.get_vendor',
             ],
         },
@@ -136,11 +137,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 # login redirects here
 
-# from django.contrib.messages import constants as messages
+from django.contrib.messages import constants as messages
+
 #
-# MESSAGE_TAGS = {
-#     messages.ERROR: 'danger',
-# }
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
 
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # or 'optional'
 # ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
@@ -154,3 +156,5 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 # EMAIL_USE_TLS = config('EMAIL_USE', cast=bool)
 DEFAULT_EMAIL = "Online Food <django.erfan@gmail.com>"
+
+GOOGLE_API_KEY = 'AIzaSyChc0Z4tXc0aQa4XYh_cn-j03AYvVzFYms'
