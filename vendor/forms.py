@@ -6,8 +6,7 @@ from vendor.models import Vendor
 
 
 class RestaurantForm(forms.ModelForm):
-    vendor_license = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}),
-                                     validators=[allow_images_only_validator])
+    vendor_license = forms.ImageField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}))
 
     class Meta:
         model = Vendor
@@ -18,12 +17,10 @@ class RestaurantForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     address = forms.CharField(widget=forms.TextInput(attrs={'placeholder' : 'Start typing...', 'required': 'required'}))
-    profile_picture = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}),
-                                      validators=[allow_images_only_validator])
+    profile_picture = forms.ImageField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}))
     # we can use ImageField instead of FileField for django automatic
     # validation, but since we have custom validation, we use the FileField
-    cover_photos = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}),
-                                   validators=[allow_images_only_validator])
+    cover_photos = forms.ImageField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}))
 
     # longitude = forms.CharField(widget=forms.TextInput(attrs={'readonly' : 'readonly'}))
     # latitude = forms.CharField(widget=forms.TextInput(attrs={'readonly' : 'readonly'}))

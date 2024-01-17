@@ -30,8 +30,11 @@
                                                                         <div class="drag-list">
                                                                             <div class="item-thumb">
                                                                                 <img class="thumbnail"
-                                                                                     src="{{ profile.profile_picture.url }}"
-                                                                                     alt="profile picture">
+                                                                                     src="
+                                                                                             
+                                                                                             
+                                                                                             {% if restaurant.user_profile.profile_picture %}{{ restaurant.user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.PNG' %}{% endif %}"
+                                                                                     alt="Profile Picture">
                                                                             </div>
                                                                         </div>
                                                                     </li>
@@ -54,8 +57,10 @@
                                                                         <div class="drag-list">
                                                                             <div class="item-thumb">
                                                                                 <img class="thumbnail"
-                                                                                     src="{{ profile.cover_photos.url }}"
-                                                                                     alt="cover photos">
+                                                                                     src="                                                                                             
+                                                                                             
+                                                                                             {% if restaurant.user_profile.cover_photos %}{{ restaurant.user_profile.cover_photos.url }}{% else %}{% static 'images/default-cover.PNG' %}{% endif %}"
+                                                                                >
                                                                             </div>
                                                                         </div>
                                                                     </li>
@@ -78,8 +83,9 @@
                                                                         <div class="drag-list">
                                                                             <div class="item-thumb">
                                                                                 <img class="thumbnail"
-                                                                                     src="{{ restaurant.vendor_license.url }}"
-                                                                                     alt="licence picture">
+                                                                                     src="                                                                                             
+                                                                                             {% if restaurant.vendor_license %}{{ restaurant.vendor_license.url }}{% else %}{% static 'images/default-profile.PNG' %}{% endif %}"
+                                                                                >
                                                                             </div>
                                                                         </div>
                                                                     </li>
@@ -104,7 +110,8 @@
                                                         <div class="field-holder">
                                                             <label>address *</label>
                                                             {{ profile_form.address }}
-                                                            <small class="text-muted float-right">powered by google</small>
+                                                            <small class="text-muted float-right">powered by
+                                                                google and erfan :D</small>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
