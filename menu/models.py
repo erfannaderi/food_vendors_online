@@ -19,6 +19,7 @@ class Category(models.Model):
     def __str__(self):
         return self.category_name
 
+# added to make sure integrity errors for same name different letters are not possible
     def clean(self):
         self.category_name = self.category_name.capitalize()
 

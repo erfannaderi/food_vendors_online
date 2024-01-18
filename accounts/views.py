@@ -295,8 +295,8 @@ def reset_password_validate(request, uidb64, token):
 def reset_password(request):
     if request.method == 'POST':
         password = request.POST['password']
-        confrim_password = request.POST['confirm_password']
-        if password == confrim_password:
+        confirm_password = request.POST['confirm_password']
+        if password == confirm_password:
             pk = request.session.get('uid')
             user = User.objects.get(pk=pk)
             user.set_password(password)

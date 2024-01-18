@@ -37,8 +37,11 @@
                                                         <p class="mb-0 font-weight-bold">{{ category }}</p>
                                                         <small class="text-muted">{{ category.description }}</small>
                                                     </a></td>
-                                                <td><i class="fa fa-pencil text-primary m-1"></i>&nbsp;
-                                                    <i class="fa fa-trash text-danger m-1"></i></td>
+                                                <td><a href="{% url 'food_category_update' category.pk %}"><i
+                                                        class="fa fa-pencil text-secondary m-1"></i></a> &nbsp;
+                                                    <a href="{% url 'food_category_delete' category.pk %}"
+                                                       onclick="return confirm('Are You Sure You Want To Delete This Category?? All The Food Items In This Category Will Be Deleted!!!')">
+                                                        <i class="fa fa-trash text-danger m-1"></i></a></td>
                                             </tr>
                                         {% endfor %}
 

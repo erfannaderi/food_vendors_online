@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -138,11 +139,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 # login redirects here
 
-from django.contrib.messages import constants as messages
 
 #
 MESSAGE_TAGS = {
-    messages.ERROR: 'danger',
+    messages.ERROR: 'danger',  # For error messages
+    messages.WARNING: 'warning',  # For warning messages
+    messages.SUCCESS: 'success',  # For success messages
+    messages.INFO: 'info',  # For info messages
 }
 
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # or 'optional'
@@ -158,4 +161,4 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 # EMAIL_USE_TLS = config('EMAIL_USE', cast=bool)
 DEFAULT_EMAIL = "Online Food <django.erfan@gmail.com>"
 
-GOOGLE_API_KEY = 'AIzaSyChc0Z4tXc0aQa4XYh_cn-j03AYvVzFYms'
+GOOGLE_API_KEY = config('GOOGLE_API_KEY')
