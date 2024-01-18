@@ -10,6 +10,11 @@ from vendor.models import Vendor
 
 # Create your views here.
 
+def get_vendor(request):
+    vendor = Vendor.objects.get(user=request.user)
+    return vendor
+
+
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def restaurant_profile(request):
@@ -36,6 +41,3 @@ def restaurant_profile(request):
         'restaurant': restaurant,
     }
     return render(request, 'vendor/restaurant_profile.html', context)
-
-def menu_builder(request):
-    return render(request, 'vendor/menu_builder.html')

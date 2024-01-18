@@ -19,24 +19,23 @@
                                         class="fa fa-angle-left text-primary m-1"></i>&nbsp;back
                                 </button>
                                 <br><br>
-
-                                <h6>Menu Categories</h6>
-                                <a href="#" class="btn btn-success float-right m-1"><i class="fa fa-plus m-1"></i>Add
-                                    Item</a>
-                                <a href="{% url 'food_category_add' %}" class="btn btn-info float-right m-1"><i
-                                        class="fa fa-plus m-1"></i>Add
-                                    Category</a>
-                                {% if categories %}
+                                <h6>Category Selected :<span class="text-success text-uppercase">{{ category }}</span>
+                                </h6>
+                                {% if food_items %}
+                                    <a href="#" class="btn btn-success float-right m-1"><i class="fa fa-plus m-1"></i>Add
+                                        Item</a>
+                                    <a href="#" class="btn btn-info float-right m-1"><i class="fa fa-plus m-1"></i>Add
+                                        Category</a>
                                     <table class="table table-hover table-light table-borderless">
                                         <tbody>
-                                        {% for category in categories %}
+                                        {% for food in food_items %}
                                             <tr>
                                                 <td class="text-left">{{ forloop.counter }}</td>
-                                                <td class="text-left ">
-                                                    <a href="{% url 'food_items_by_category' category.pk %}">
-                                                        <p class="mb-0 font-weight-bold">{{ category }}</p>
-                                                        <small class="text-muted">{{ category.description }}</small>
-                                                    </a></td>
+                                                <td class="text-left"><img src="{{ food.image.url }}" alt="food picture"
+                                                                           width="40"></td>
+                                                <td class="text-left "><a href="#"><p
+                                                        class="mb-0 font-weight-bold">{{ food }}</p>
+                                                    <small class="text-muted">{{ food.description }}</small> </a></td>
                                                 <td><i class="fa fa-pencil text-primary m-1"></i>&nbsp;
                                                     <i class="fa fa-trash text-danger m-1"></i></td>
                                             </tr>
@@ -45,7 +44,13 @@
                                         </tbody>
                                     </table>
                                 {% else %}
-
+                                    <h4 class="text-center">There is <span class="text-danger">NO</span> Food Item</h4>
+                                    <div class="text-center">
+                                        <a href="#" class="btn btn-success">
+                                            <i class="fa fa-plus m-1"></i>&nbsp;
+                                            Add Food Item
+                                        </a>
+                                    </div>
                                 {% endif %}
                             </div>
                         </div>
