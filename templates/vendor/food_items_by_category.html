@@ -22,7 +22,7 @@
                                 <h6>Category Selected :<span class="text-success text-uppercase">{{ category }}</span>
                                 </h6>
                                 {% if food_items %}
-                                    <a href="#" class="btn btn-success float-right m-1"><i class="fa fa-plus m-1"></i>Add
+                                    <a href="{% url 'food_item_addd' %}" class="btn btn-success float-right m-1"><i class="fa fa-plus m-1"></i>Add
                                         Item</a>
                                     <a href="{% url 'food_category_add' %}" class="btn btn-info float-right m-1"><i class="fa fa-plus m-1"></i>Add
                                         Category</a>
@@ -46,7 +46,7 @@
                                 {% else %}
                                     <h4 class="text-center">There is <span class="text-danger">NO</span> Food Item</h4>
                                     <div class="text-center">
-                                        <a href="#" class="btn btn-success">
+                                        <a href="{% url 'food_item_add' %}" class="btn btn-success">
                                             <i class="fa fa-plus m-1"></i>&nbsp;
                                             Add Food Item
                                         </a>
