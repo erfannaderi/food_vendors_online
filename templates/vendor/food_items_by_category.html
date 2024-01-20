@@ -22,9 +22,11 @@
                                 <h6>Category Selected :<span class="text-success text-uppercase">{{ category }}</span>
                                 </h6>
                                 {% if food_items %}
-                                    <a href="{% url 'food_item_addd' %}" class="btn btn-success float-right m-1"><i class="fa fa-plus m-1"></i>Add
+                                    <a href="{% url 'food_item_add' %}" class="btn btn-success float-right m-1"><i
+                                            class="fa fa-plus m-1"></i>Add
                                         Item</a>
-                                    <a href="{% url 'food_category_add' %}" class="btn btn-info float-right m-1"><i class="fa fa-plus m-1"></i>Add
+                                    <a href="{% url 'food_category_add' %}" class="btn btn-info float-right m-1"><i
+                                            class="fa fa-plus m-1"></i>Add
                                         Category</a>
                                     <table class="table table-hover table-light table-borderless">
                                         <tbody>
@@ -33,11 +35,23 @@
                                                 <td class="text-left">{{ forloop.counter }}</td>
                                                 <td class="text-left"><img src="{{ food.image.url }}" alt="food picture"
                                                                            width="40"></td>
-                                                <td class="text-left "><a href="#"><p
+                                                <td class="text-left "><a href="{% url 'food_item_update' %}"><p
                                                         class="mb-0 font-weight-bold">{{ food }}</p>
                                                     <small class="text-muted">{{ food.description }}</small> </a></td>
-                                                <td><i class="fa fa-pencil text-primary m-1"></i>&nbsp;
-                                                    <i class="fa fa-trash text-danger m-1"></i></td>
+                                                <td>
+                                                    {% if  food.is_available == True %}
+                                                        <span class="badge badge-success">Available</span>
+
+                                                    {% else %}
+                                                        <span class="badge badge-danger">Not Available</span>
+
+                                                    {% endif %}
+                                                </td>
+                                                <td><a href="{% url 'food_item_update' food.pk %}"><i
+                                                        class="fa fa-pencil text-secondary m-1"></i></a> &nbsp;
+                                                    <a href="{% url 'food_item_delete' food.pk %}"
+                                                       onclick="return confirm('Are You Sure You Want To Delete This FOOD ITEM??')">
+                                                        <i class="fa fa-trash text-danger m-1"></i></a></td>
                                             </tr>
                                         {% endfor %}
 

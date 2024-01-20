@@ -10,8 +10,8 @@ class CategoryMenuForm(forms.ModelForm):
 
 
 class FoodItemForm(forms.ModelForm):
-    # image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'btn btn-info w-100'}))
+    image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'btn btn-info w-100'}))
 
     class Meta:
         model = FoodItem
-        fields = ['category', 'food_title', 'description', 'price', 'image', 'is_available']
+        fields = ['category', 'description', 'food_title', 'price', 'image', 'is_available']

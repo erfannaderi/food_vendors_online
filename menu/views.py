@@ -93,17 +93,18 @@ def food_category_delete(request, pk=None):
 @user_passes_test(check_role_vendor)
 def food_item_add(request):
     if request.method == 'POST':
-        form = CategoryMenuForm(request.POST)
+        form = FoodItemForm(request.POST, request.FILES)
         if form.is_valid():
             food_title = form.cleaned_data['food_title']
             food_item = form.save(commit=False)
             food_item.vendor = get_vendor(request)
             food_item.slug = slugify(food_title)
             form.save()
-            messages.success(request, "Category has been added")
-            return redirect('menu_builder')
+            messages.success(request, "Food item has been added")
+            return redirect('food_items_by_category', food_item.category.pk)
     else:
         form = FoodItemForm()
+        form.fields['category'].queryset= Category.objects.filter(vendor=get_vendor(request))
     context = {
         'form': form,
     }
@@ -115,7 +116,7 @@ def food_item_add(request):
 def food_item_update(request, pk=None):
     food_item = get_object_or_404(FoodItem, pk=pk)
     if request.method == 'POST':
-        form = CategoryMenuForm(request.POST, instance=food_item)
+        form = FoodItemForm(request.POST, request.FILES, instance=food_item)
         if form.is_valid():
             food_title = form.cleaned_data['food_title']
             food_item = form.save(commit=False)
@@ -123,12 +124,13 @@ def food_item_update(request, pk=None):
             food_item.slug = slugify(food_title)
             form.save()
             messages.success(request, "food item has been updated successfully")
-            return redirect('menu_builder')
+            return redirect('food_items_by_category', food_item.category.pk)
     else:
-        form = CategoryMenuForm(instance=food_item)
+        form = FoodItemForm(instance=food_item)
+        form.fields['category'].queryset= Category.objects.filter(vendor=get_vendor(request))
     context = {
         'form': form,
-        'category': food_item,
+        'food_item': food_item,
     }
     return render(request, 'vendor/food_item_update.html', context)
 

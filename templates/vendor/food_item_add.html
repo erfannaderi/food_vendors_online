@@ -20,7 +20,7 @@
                                 </button>
                                 <br><br>
                                 <h6>Add New Food Item</h6>
-                                <form action="{% url 'food_item_add' %}" method="POST">
+                                <form action="{% url 'food_item_add' %}" method="POST" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <div class="form-fields-set">
                                         <div class="row">
@@ -44,13 +44,13 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <div class="field-holder">
-                                                    <label for="id_food_title">Food Price :</label>
+                                                    <label for="id_price">Food Price :</label>
                                                     {{ form.price }}
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <div class="field-holder btn btn-info">
-                                                    <label for="id_description">Image of your Food</label>
+                                                    <label for="id_image">Image of your Food</label>
                                                     {{ form.image }}
                                                 </div>
                                             </div>
@@ -60,7 +60,7 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <div class="field-holder">
-                                                    <label for="id_description">Food Availability</label>
+                                                    <label for="id_is_available">Food Availability</label>
                                                     {{ form.is_available }}
                                                 </div>
                                             </div>
