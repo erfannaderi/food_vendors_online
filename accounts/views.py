@@ -1,3 +1,5 @@
+import hashlib
+
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -6,6 +8,7 @@ from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
 # from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
@@ -15,8 +18,16 @@ from accounts.models import User, UserProfile
 from accounts.utils import detect_user, send_verification_email
 from vendor.forms import RestaurantForm
 from vendor.models import Vendor
+from slugify import slugify
 
 
+#
+# # Example of slugifying a Persian string
+# persian_string = "رستوران_مثال"
+# slugified_string = slugify(persian_string)
+# print(slugified_string)  # Output: 'رستوران-مثال'
+
+############################
 # Create your views here.
 # class RegisterClientView(View):  # Inherit from the base View class
 #     template_name = 'accounts/register-client.html'
@@ -163,6 +174,11 @@ def register_restaurant(request):
                 # we need to add user and userprofile to the restaurant
                 restaurant = restaurant_form.save(commit=False)
                 restaurant.user = user
+                vendor_name = restaurant_form.cleaned_data['vendor_name']
+                user_id = user.pk
+                hashed_user_id = hashlib.sha256(str(user_id).encode('utf-8')).hexdigest()
+                encrypted_slug = f"{slugify(vendor_name)}-{hashed_user_id}"
+                restaurant.vendor_slug = encrypted_slug
                 user_profile = UserProfile.objects.get(user=user)
                 restaurant.user_profile = user_profile
                 restaurant.save()
@@ -211,9 +227,6 @@ class MyLoginView(LoginView):
     def form_invalid(self, form):
         messages.error(self.request, 'Invalid username or password')
         return self.render_to_response(self.get_context_data(form=form))
-
-
-
 
 
 class CustomLogoutView(View):
