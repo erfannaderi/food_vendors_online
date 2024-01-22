@@ -130,9 +130,19 @@
                                                     </div>
                                                     <div class="price-holder">
                                                         <span class="price">{{ food_item.price }} هزار تومان </span>
-                                                        <a href="#" class="restaurant-add-menu-btn"><i
-                                                                class="icon-plus4 text-color"></i></a>
-                                                        <span id="add-menu-loader-10"></span>
+                                                        <a href="{% url 'delete_cart' food_item.pk %}" class=
+                                                                "delete-cart" data-id="{{ food_item.pk }}"
+                                                           data-url="{% url 'delete_cart' food_item.pk %}">
+                                                            <i class="icon-delete text-color"></i></a>
+                                                        <a href="#" class="decrease-cart" style="margin-right: 28px;"
+                                                           data-id="{{ food_item.pk }}"
+                                                           data-url="{% url 'decrease_cart' food_item.pk %}"><i
+                                                                class="icon-minus3 text-color"></i></a>
+                                                        <label id="qty-{{ food_item.pk }}">0</label>
+                                                        <a href="{% url 'add_to_cart' food_item.pk %}" class=
+                                                                "add-to-cart" data-id="{{ food_item.pk }}"
+                                                           data-url="{% url 'add_to_cart' food_item.pk %}">
+                                                            <i class="icon-plus4 text-color"></i></a>
                                                     </div>
                                                 </li>
                                             {% endfor %}
@@ -140,6 +150,11 @@
                                     {% endfor %}
                                 {% endif %}
                                 </div>
+                                {% for item in cart_items %}
+                                    <span class="items_qty d-none"
+                                          id="qty-{{ item.food_item.pk }}"
+                                          data-qty="{{ item.quantity }}">{{ item.quantity }}</span>
+                                {% endfor %}
                                 </div>
                                 </div>
 

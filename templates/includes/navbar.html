@@ -73,14 +73,28 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                         <div class="login-option" style="display: flex; justify-content: space-between;">
-                        <a href="{% url 'market_place' %}" class="btn btn-outline-danger text-uppercase font-weight-bold" 
-                        style="margin-top: 22px;">Market Place</a>
                             {% if request.user.is_authenticated %}
+                                <div class="cart-container">
+                                <a href="#" class="cart-icon"
+                                   style="position: relative; display: inline-block; margin-top: 30px; margin-right: 30px; scale: 1.4;">
+                                    <i class="fa fa-shopping-cart text-danger"></i>
+                                    <span class="badge badge-dark" id="cart_counter"
+                                          style="position: absolute; top: -13px; right: -13px; min-width: 20px; height: 20px; padding: 4px; border-radius: 50%; text-align: center; font-size: 12px;">
+                                        {{ cart_counter }}
+                                    </span>
+                                </a>
+                            </div>
+                                <a href="{% url 'market_place' %}"
+                               class="btn btn-outline-danger text-uppercase font-weight-bold"
+                               style="margin-top: 22px;">Market Place</a>
                                 <a class="cs-color cs-popup-joinus-btn login-popup btn btn-danger p-2 text-light"
                                    href="{% url 'logout' %}">Logout </a>
                                 <a class="cs-color cs-popup-joinus-btn login-popup btn btn-danger p-2 text-light"
                                    href="{% url 'my_account' %}">{{ user.username }} </a>
                             {% else %}
+                                <a href="{% url 'market_place' %}"
+                               class="btn btn-outline-danger text-uppercase font-weight-bold"
+                               style="margin-top: 22px;">Market Place</a>
                                 <a class="cs-color cs-popup-joinus-btn login-popup btn btn-danger p-2 text-light"
                                    href="{% url 'login' %}">Login</a>
                                 <a href="{% url 'register_client' %}"

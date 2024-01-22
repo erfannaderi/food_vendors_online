@@ -62,3 +62,76 @@ function onPlaceChanged() {
         }
     }
 }
+
+
+$(document).ready(function () {
+    // add  to cart
+    $('.add-to-cart').on('click', function (e) {
+        e.preventDefault();
+        food_item_pk = $(this).attr('data-id');
+        url = $(this).attr('data-url');
+
+        // data={food_item_pk:food_item_pk}//data to store or send to django
+        $.ajax({
+            type: 'GET',
+            url: url,
+            // data:data,
+            success: function (response) {
+                console.log(response);
+                if (response.status == 'failed') {
+                    console.log(response);
+                } else {
+                    $('#cart_counter').html(response.cart_counter['cart_counter']);
+                    $('#qty-' + food_item_pk).html(response.qty);
+                }
+            }
+        });
+    });
+    //make the cart item quantity on a load
+    $('.items_qty').each(function () {
+        var the_id = $(this).attr('id');
+        var qty = $(this).attr('data-qty');
+        $('#' + the_id).html(qty);
+    });
+    // decrease cart
+    $('.decrease-cart').on('click', function (e) {
+        e.preventDefault();
+        food_item_pk = $(this).attr('data-id');
+        url = $(this).attr('data-url');
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (response) {
+                console.log(response);
+                if (response.status == 'failed') {
+                    console.log(response)
+                } else {
+                    $('#cart_counter').html(response.cart_counter['cart_counter']);
+                    $('#qty-' + food_item_pk).html(response.qty);
+                }
+            }
+        });
+    });
+    // delete
+    $('.delete-cart').on('click', function (e) {
+        e.preventDefault();
+        var food_item_pk = $(this).attr('data-id');
+        var url = $(this).attr('data-url');
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (response) {
+                console.log(response);
+                if (response.status == 'failed') {
+                    console.log('raise the error message');
+                } else {
+                    $('#qty-' + food_item_pk).html('0');
+                    $('#cart_counter').html(response.cart_counter);
+                }
+            }
+        });
+    });
+});
+

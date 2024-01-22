@@ -22,7 +22,7 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     quantity = models.SmallIntegerField()
-    discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
+    discount = models.ForeignKey(Discount, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
