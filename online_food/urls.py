@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from market_place.views import cart_view
 from online_food.views import HomePageView
 
 urlpatterns = [
@@ -27,4 +28,6 @@ urlpatterns = [
                   path('', include('accounts.urls')),
                   path('market-place/', include('market_place.urls')),
                   path('', include('allauth.urls')),
+                  # cart
+                  path('cart/', cart_view, name='cart_view'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
