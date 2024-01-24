@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     'vendor',
     'menu',
     'market_place',
+    'client',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -165,3 +168,9 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 DEFAULT_EMAIL = "Online Food <django.erfan@gmail.com>"
 
 GOOGLE_API_KEY = config('GOOGLE_API_KEY')
+
+GRAPH_MODELS ={
+    "all_applications": True,
+    "group_models": True,
+}
+# python manage.py graph_models --pydot -a -g -o my_project_visualized.png

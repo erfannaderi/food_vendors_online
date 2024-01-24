@@ -108,12 +108,13 @@
                                         <div id="home" class="tab-pane in active">
                                         <div class="menu-itam-holder">
 
-                                        <div id="menu-item-list-6272" class="menu-itam-list">
+                                        <div id="menu-itam-list-6272" class="menu-itam-list">
 
                                         <div class="element-title" id="menu-category-2">
                                             <h5 class="text-color">{{ category }}</h5>
                                             <span>{{ category.description }}</span>
                                         </div>
+                                        <br>
                                         <ul>
                                             {% for food_item in category.fooditems.all %}
                                                 <li>

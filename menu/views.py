@@ -1,3 +1,5 @@
+import hashlib
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, get_object_or_404, redirect
@@ -44,8 +46,11 @@ def food_category_add(request):
         if form.is_valid():
             category_name = form.cleaned_data['category_name']
             category = form.save(commit=False)
+            category_pk = category.pk
+            hashed_user_id = hashlib.sha256(str(category_pk).encode('utf-8')).hexdigest()
+            encrypted_slug = f"{slugify(category_name)}-{hashed_user_id}"
             category.vendor = get_vendor(request)
-            category.slug = slugify(category_name)
+            category.slug = encrypted_slug
             form.save()
             messages.success(request, "Category has been added")
             return redirect('menu_builder')
@@ -67,7 +72,10 @@ def food_category_update(request, pk=None):
             category_name = form.cleaned_data['category_name']
             category = form.save(commit=False)
             category.vendor = get_vendor(request)
-            category.slug = slugify(category_name)
+            category_pk = category.pk
+            hashed_user_id = hashlib.sha256(str(category_pk).encode('utf-8')).hexdigest()
+            encrypted_slug = f"{slugify(category_name)}-{hashed_user_id}"
+            category.slug = encrypted_slug
             form.save()
             messages.success(request, "Category has been updated successfully")
             return redirect('menu_builder')
@@ -98,7 +106,10 @@ def food_item_add(request):
             food_title = form.cleaned_data['food_title']
             food_item = form.save(commit=False)
             food_item.vendor = get_vendor(request)
-            food_item.slug = slugify(food_title)
+            food_item_pk = food_item.pk
+            hashed_user_id = hashlib.sha256(str(food_item_pk).encode('utf-8')).hexdigest()
+            encrypted_slug = f"{slugify(food_title)}-{hashed_user_id}"
+            food_item.slug = encrypted_slug
             form.save()
             messages.success(request, "Food item has been added")
             return redirect('food_items_by_category', food_item.category.pk)

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Prefetch
-from django.http import JsonResponse
+from django.db.models import Prefetch, Q
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView, DetailView
@@ -144,3 +144,23 @@ def cart_view(request):
         'cart_items': cart_items,
     }
     return render(request, 'marketplace/cart.html', context)
+
+
+def search_view(request):
+    address = request.GET['address']
+    latitude = request.GET['lat']
+    longitude = request.GET['lng']
+    radius = request.GET['radius']
+    keyword = request.GET['keyword']
+    fetch_vendors_by_food_items = FoodItem.objects.filter(food_title__icontains=keyword,
+                                                          is_available=True).values_list('vendor', flat=True)
+    vendors = Vendor.objects.filter(Q(pk__in=fetch_vendors_by_food_items) |
+                                    Q(vendor_name__icontains=keyword, is_approved=True, user__is_active=True))
+    print(fetch_vendors_by_food_items)
+    # vendors = Vendor.objects.filter(vendor_name__icontains=keyword, is_approved=True, user__is_active=True)
+    vendor_counter = vendors.count()
+    context = {
+        'vendors': vendors,
+        'vendor_counter': vendor_counter,
+    }
+    return render(request, 'marketplace/listings.html', context)

@@ -2,7 +2,7 @@ from django.urls import path, include
 from accounts.views import restaurant_dashboard, my_account
 from menu.views import food_category_add, food_items_by_category, menu_builder, food_category_update, \
     food_category_delete, food_item_add, food_item_update, food_item_delete
-from vendor.views import restaurant_profile
+from vendor.views import restaurant_profile, opening_hours_views, add_opening_hours_views, remove_opening_hours_views
 
 urlpatterns = [
     path('', restaurant_dashboard, name='restaurant'),
@@ -20,4 +20,8 @@ urlpatterns = [
     path('menu-builder/', my_account, name='my_account'),
     path('menu-builder/food-item/update/<int:pk>', food_item_update, name='food_item_update'),
     path('menu-builder/food-item/delete/<int:pk>', food_item_delete, name='food_item_delete'),
+    # opening hours crud
+    path('opening-hours/', opening_hours_views, name='opening_hours'),
+    path('opening-hours/add', add_opening_hours_views, name='add_opening_hours'),
+    path('opening-hours/remove/<int:pk>/', remove_opening_hours_views, name='remove_opening_hours'),
 ]

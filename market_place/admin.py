@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from market_place.models import Cart, Discount
+from market_place.models import Cart, Discount, Tax
 
 
 # Register your models here.
@@ -17,3 +17,10 @@ class DiscountAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Discount, DiscountAdmin)
+
+
+class TaxAdmin(admin.ModelAdmin):
+    list_display = ('tax_type', 'tax_percentage', 'is_active')
+
+
+admin.site.register(Tax, TaxAdmin)

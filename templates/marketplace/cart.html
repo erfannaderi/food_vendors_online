@@ -14,15 +14,15 @@
                             </ul>
                             <div class="tab-content">
                                 <div id="home" class="tab-pane in active">
-                                    <div class="menu-item-holder">
-                                        <div class="text-center pt-5" id="empty-cart" style="display: none;">
+                                    <div class="menu-itam-holder">
+                                        <div class="text-center pt-5" id="empty-cart">
                                             <h3>The Cart is Empty</h3>
                                         </div>
-                                        <div id="menu-item-list-6272" class="menu-item-list">
+                                        <div id="menu-itam-list-6272" class="menu-itam-list">
                                             <ul>
                                                 {% if cart_items %}
                                                     {% for cart_item in cart_items %}
-                                                        <li id="cart-item-{{ cart_item.food_item.pk }}">
+                                                        <li id="cart-itam-{{ cart_item.food_item.pk }}">
                                                             <div class="image-holder"
                                                                  style="width: 50px; height: 50px; overflow: hidden;list-style-type: none;">
                                                                 {% if cart_item.food_item.image %}
@@ -43,7 +43,6 @@
                                                                 <span class="price">{{ cart_item.food_item.price }} هزار تومان </span>
                                                                 <a href="{% url 'delete_cart' cart_item.food_item.pk %}"
                                                                    class="delete-cart float-right"
-                                                                   style="color: red; margin-right: 15px;"
                                                                    data-id="{{ cart_item.food_item.pk }}"
                                                                    data-url="{% url 'delete_cart' cart_item.food_item.pk %}">
                                                                     <i class="icon-delete text-color"></i>
@@ -51,17 +50,15 @@
                                                                 <a href="{% url 'decrease_cart' cart_item.food_item.pk %}"
                                                                    class="decrease-cart float-right"
                                                                    id="{{ cart_item.food_item.pk }}"
-                                                                   style="color: blue; margin-right: 15px;"
+
                                                                    data-id="{{ cart_item.food_item.pk }}"
                                                                    data-url="{% url 'decrease_cart' cart_item.food_item.pk %}">
                                                                     <i class="icon-minus3 text-color"></i>
                                                                 </a>
-                                                                <label id="qty-{{ cart_item.food_item.pk }}"
-                                                                       class="float-right"
-                                                                       style="margin: 0 15px;">0</label>
+                                                                <label id="qty-{{ cart_item.food_item.pk }}" style="margin-top:11px; margin-left: 25px;"
+                                                                       class="float-right">0</label>
                                                                 <a href="{% url 'add_to_cart' cart_item.food_item.pk %}"
                                                                    class="add-to-cart float-right"
-                                                                   style="color: green; margin-left: 15px;"
                                                                    data-id="{{ cart_item.food_item.pk }}"
                                                                    data-url="{% url 'add_to_cart' cart_item.food_item.pk %}">
                                                                     <i class="icon-plus4 text-color"></i>
@@ -94,7 +91,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div id="home" class="tab-pane in active">
-                                    <div class="menu-item-holder">
+                                    <div class="menu-itam-holder">
                                         <div>
                                             <ul>
 

@@ -208,6 +208,90 @@ $(document).ready(function () {
             $('#total').html(total)
         }
     }
+
+    //hours jquery
+    $('.add_hours').on('click', function (e) {
+        e.preventDefault();
+        var day = $('#id_day').val();
+        var from_hours = $('#id_from_hours').val();
+        var to_hours = $('#id_to_hours').val();
+        var is_closed = $('#id_is_closed').prop('checked');
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        var url = $('#add_hour_url').val();
+        console.log(day, from_hours, to_hours, is_closed, csrf);
+        if (is_closed) {
+            is_closed = 'True';
+            condition = "day != ''";
+        } else {
+            is_closed = 'False';
+            condition = "day != '' && from_hours != '' && to_hours != ''";
+        }
+        if (eval(condition)) {
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    'day': day,
+                    'from_hours': from_hours,
+                    'to_hours': to_hours,
+                    'is_closed': is_closed,
+                    'csrfmiddlewaretoken': csrf,
+                },
+                success: function (response) {
+                    if (response.status == 'success') {
+                        if (response.is_closed == 'Closed') {
+                            html = '<tr id="hour-' + response.pk + '"><td><b>' + response.day + '</b></td><td>Closed</td><td><a href="#" class="btn btn-danger remove_hours" data-url="/restaurant/opening-hours/remove/' + response.pk + '/">remove</a></td></tr>';
+                            $(".opening_hours").append(html);
+                            document.getElementById("open_hours").reset();
+                        } else {
+                            html = '<tr id="hour-' + response.pk + '"><td><b>' + response.day + '</b></td><td>' + response.from_hours + ' - ' + response.to_hours + '</td><td><a href="#" class="btn btn-danger remove_hours" data-url=" /restaurant/opening-hours/remove/' + response.pk + '/">remove</a></td></tr>';
+                            $(".opening_hours").append(html);
+                            document.getElementById("open_hours").reset();
+                        }
+                    } else {
+                        swal(response.message, '', 'error')
+                    }
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    swal('Error', 'An error occurred while adding opening hours', 'error');
+                }
+            });
+        } else {
+            swal('Please fill all fields', '', 'error');
+        }
+    });
+    // Removing opening hours (using event delegation)
+    $(document).on('click', '.remove_hours', function (e) {
+        e.preventDefault();
+        var url = $(this).attr('data-url');
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (response) {
+                if (response.status === 'success') {
+                    $('#hour-' + response.pk).remove();
+                }
+            }
+        });
+    });
+    //removing
+    $('.remove_hours').on('click', function (e) {
+        e.preventDefault();
+        url = $(this).attr('data-url');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (response) {
+                if (response.status === 'success') {
+                    document.getElementById('hour-' + response.pk).remove()
+                }
+            }
+        })
+    })
+
+    //closeing jquery
 });
 //
 // function getCookie(name) {

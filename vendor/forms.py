@@ -2,7 +2,7 @@ from django import forms
 
 from accounts.models import UserProfile
 from accounts.validators import allow_images_only_validator
-from vendor.models import Vendor
+from vendor.models import Vendor, OpeningHours
 
 
 class RestaurantForm(forms.ModelForm):
@@ -35,3 +35,9 @@ class UserProfileForm(forms.ModelForm):
         for field in self.fields:
             if field == 'latitude' or field == 'longitude':
                 self.fields[field].widget.attrs['readonly'] = 'readonly'
+
+
+class OpeningHoursForm(forms.ModelForm):
+    class Meta:
+        model = OpeningHours
+        fields = ['day', 'from_hours', 'to_hours', 'is_closed']

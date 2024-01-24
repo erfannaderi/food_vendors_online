@@ -25,11 +25,11 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                         <div class="main-search fancy bg-holder">
-                            <form>
+                            <form action="{% url 'search' %}" method="GET">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
                                         <div class="field-holder">
-                                            <input type="text" placeholder="Resturant name">
+                                            <input type="text" name="keyword" placeholder="Resturant name">
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
@@ -39,12 +39,15 @@
                                                     <div class="foodbakery-locations-fields-group foodbakery-focus-out">
                                                         <span class="foodbakery-search-location-icon"><i
                                                                 class="icon-location"></i></span>
-                                                        <span id="foodbakery_radius_location_open333"
+                                                        <!--location  target slider icon <span id="foodbakery_radius_location_open333"
                                                               class="foodbakery-radius-location"><i
-                                                                class="icon-target5"></i></span>
-                                                        <input type="text" class="location-field-text filter"
-                                                               placeholder="All Locations">
+                                                                class="icon-target5"></i></span>-->
+                                                        <input type="text" name="address" class="location-field-text filter"
+                                                               placeholder="All Locations" id="id_address">
                                                     </div>
+                                                    <input type="hidden" name="lat" value="" id="id_latitude">
+                                                    <input type="hidden" name="lng" value="" id="id_longitude">
+                                                    <!--location slider
                                                     <div class="select-location" id="foodbakery-radius-range333"
                                                          style="display: none;">
                                                         <div class="select-popup popup-open">
@@ -93,10 +96,23 @@
                                                                     class="cs-color foodbakery-geo-location313324"
                                                                     href="javascript:void(0)">My location</a></p>
                                                         </div>
-                                                    </div>
+                                                    </div>-->
                                                 </li>
                                             </ul>
                                         </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                        <select name="radius" id="radius" style="height: 50px; color: rebeccapurple">
+                                            <option value="" selected>CHOOSE RADIUS</option>
+                                            <option value="5" selected> 5km </option>
+                                            <option value="10" selected> 10km </option>
+                                            <option value="15" selected> 15km </option>
+                                            <option value="20" selected> 20km </option>
+                                            <option value="25" selected> 25km </option>
+                                            <option value="50" selected> 50km </option>
+                                            <option value="100" selected> 100km </option>
+                                            <option value="200" selected> 200km </option>
+                                        </select>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                         <div class="field-holder">
@@ -221,9 +237,9 @@
                                                         </h5>
                                                     </div>
                                                     {% if vendor.user_profile.city and vendor.user_profile.state %}
-                                                    <address><span>address</span> 
-                                                        {{ vendor.user_profile.city }},{{ vendor.user_profile.state}}
-                                                    </address>
+                                                        <address><span>address</span>
+                                                            {{ vendor.user_profile.city }},{{ vendor.user_profile.state }}
+                                                        </address>
                                                     {% endif %}
                                                 </div>
 
@@ -231,48 +247,48 @@
                                         </li>
 
 
-{#                                        <li class="col-lg-6 col-md-6 col-sm-6 col-xs-12">#}
-{#                                            <div class="list-post featured">#}
-{#                                                <div class="img-holder">#}
-{##}
-{#                                                    <figure><a href="#">#}
-{#                                                        {% if vendor.user_profile.profile_picture %}#}
-{##}
-{#                                                            <img#}
-{#                                                                    src="{{ vendor.user_profile.profile_picture.url }}"#}
-{#                                                                    class="img-thumb wp-post-image" alt="">#}
-{#                                                        {% else %}#}
-{#                                                            <img src="{% static 'extra-images/listing-logo18.png' %}"#}
-{#                                                                 class="attachment-full size-full wp-post-image" alt="">#}
-{#                                                        {% endif %}#}
-{##}
-{#                                                    </a>#}
-{#                                                    </figure>#}
-{#                                                    <span class="restaurant-status open">#}
-{#													<em class="bookmarkRibbon"></em>open#}
-{#												</span>#}
-{#                                                </div>#}
-{#                                                <div class="text-holder">#}
-{#                                                    <div class="list-rating">#}
-{#                                                        <div class="rating-star">#}
-{#                                                            <span class="rating-box" style="width: 100%;"></span>#}
-{#                                                        </div>#}
-{#                                                        <span class="reviews">(1)</span>#}
-{#                                                    </div>#}
-{#                                                    <div class="post-title">#}
-{#                                                        <h5>#}
-{#                                                            <a href="listing-detail.html">Classic Restaurant</a>#}
-{#                                                            <span class="sponsored text-color">Sponsored</span>#}
-{#                                                        </h5>#}
-{#                                                    </div>#}
-{#                                                    <address><span>Type of food:</span> Chicken Roast, Chines#}
-{#                                                        Soup, Cold#}
-{#                                                        Coffee, Cold Drink, Hot Dogs#}
-{#                                                    </address>#}
-{#                                                </div>#}
-{##}
-{#                                            </div>#}
-{#                                        </li>#}
+                                        {#                                        <li class="col-lg-6 col-md-6 col-sm-6 col-xs-12">#}
+                                        {#                                            <div class="list-post featured">#}
+                                        {#                                                <div class="img-holder">#}
+                                        {##}
+                                        {#                                                    <figure><a href="#">#}
+                                        {#                                                        {% if vendor.user_profile.profile_picture %}#}
+                                        {##}
+                                        {#                                                            <img#}
+                                        {#                                                                    src="{{ vendor.user_profile.profile_picture.url }}"#}
+                                        {#                                                                    class="img-thumb wp-post-image" alt="">#}
+                                        {#                                                        {% else %}#}
+                                        {#                                                            <img src="{% static 'extra-images/listing-logo18.png' %}"#}
+                                        {#                                                                 class="attachment-full size-full wp-post-image" alt="">#}
+                                        {#                                                        {% endif %}#}
+                                        {##}
+                                        {#                                                    </a>#}
+                                        {#                                                    </figure>#}
+                                        {#                                                    <span class="restaurant-status open">#}
+                                        {#													<em class="bookmarkRibbon"></em>open#}
+                                        {#												</span>#}
+                                        {#                                                </div>#}
+                                        {#                                                <div class="text-holder">#}
+                                        {#                                                    <div class="list-rating">#}
+                                        {#                                                        <div class="rating-star">#}
+                                        {#                                                            <span class="rating-box" style="width: 100%;"></span>#}
+                                        {#                                                        </div>#}
+                                        {#                                                        <span class="reviews">(1)</span>#}
+                                        {#                                                    </div>#}
+                                        {#                                                    <div class="post-title">#}
+                                        {#                                                        <h5>#}
+                                        {#                                                            <a href="listing-detail.html">Classic Restaurant</a>#}
+                                        {#                                                            <span class="sponsored text-color">Sponsored</span>#}
+                                        {#                                                        </h5>#}
+                                        {#                                                    </div>#}
+                                        {#                                                    <address><span>Type of food:</span> Chicken Roast, Chines#}
+                                        {#                                                        Soup, Cold#}
+                                        {#                                                        Coffee, Cold Drink, Hot Dogs#}
+                                        {#                                                    </address>#}
+                                        {#                                                </div>#}
+                                        {##}
+                                        {#                                            </div>#}
+                                        {#                                        </li>#}
                                     {% endfor %}
                                 {% else %}
                                 {% endif %}

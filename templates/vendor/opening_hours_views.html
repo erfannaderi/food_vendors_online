@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'includes/alerts.html' %}
+    <div class="main-section">
+        {% include 'includes/cover.html' %}
+        <div class="page-section account-header buyer-logged-in">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        {% include 'includes/restaurant_sidebar.html' %}
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                        <div class="user-dashboard loader-holder">
+                            <div class="user-holder">
+                                <h5 class="text-uppercase">edit your business-opening hours</h5>
+                                <hr>
+                                <button class="btn btn-secondary" onclick="history.back()"><i
+                                        class="fa fa-angle-left text-primary m-1"></i>&nbsp;back
+                                </button>
+                                <br><br>
+                                <h6>Opening Hours</h6>
+                                <br>
+                                <table class=" table opening_hours table-borderless" style="width: 500px;">
+                                    <tbody>
+                                    {% for time_slot in opening_hours %}
+                                        <tr id="hour-{{ time_slot.pk }}">
+                                            <td><b>{{ time_slot }}</b></td>
+                                            <td>{% if time_slot.is_closed %} Closed {% else %} Open Through
+                                                {{ time_slot.from_hours }}-{{ time_slot.to_hours }}{% endif %}</td>
+                                            <td><a href="{% url 'remove_opening_hours' time_slot.pk %}"
+                                                   class="btn btn-danger remove_hours"
+                                                   data-url="{% url 'remove_opening_hours' time_slot.pk %}">remove</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <form id="opening_hours" action="{% url 'add_opening_hours' %}">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-2 pr-2">
+                                            {{ form.day }}
+                                        </div>
+                                        <div class="col-md-2">
+                                            {{ form.from_hours }}
+                                        </div>
+                                        <div class="col-md-2">
+                                            {{ form.to_hours }}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{ form.is_closed }} SET AS CLOSED
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="hidden" value="{% url 'add_opening_hours' %}"
+                                                   id="add_hour_url">
+                                            <button type="button" class="btn btn-success add_hours"
+                                                    style="width: 150px; height: 30px;">
+                                                Add Hours
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
