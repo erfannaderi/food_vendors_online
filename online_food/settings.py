@@ -74,6 +74,7 @@ TEMPLATES = [
                 'accounts.context_processors.get_google_api',
                 'accounts.context_processors.get_vendor',
                 'market_place.context_processors.get_cart_counter',
+                'market_place.context_processors.get_cart_amount',
             ],
         },
     },

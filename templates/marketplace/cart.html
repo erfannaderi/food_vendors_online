@@ -15,14 +15,16 @@
                             <div class="tab-content">
                                 <div id="home" class="tab-pane in active">
                                     <div class="menu-item-holder">
-
+                                        <div class="text-center pt-5" id="empty-cart" style="display: none;">
+                                            <h3>The Cart is Empty</h3>
+                                        </div>
                                         <div id="menu-item-list-6272" class="menu-item-list">
                                             <ul>
                                                 {% if cart_items %}
                                                     {% for cart_item in cart_items %}
-                                                        <li>
+                                                        <li id="cart-item-{{ cart_item.food_item.pk }}">
                                                             <div class="image-holder"
-                                                                 style="width: 50px; height: 50px; overflow: hidden;">
+                                                                 style="width: 50px; height: 50px; overflow: hidden;list-style-type: none;">
                                                                 {% if cart_item.food_item.image %}
                                                                     <img src="{{ cart_item.food_item.image.url }}"
                                                                          alt="{{ cart_item }} picture"
@@ -32,6 +34,10 @@
                                                             <div class="text-holder">
                                                                 <h6>{{ cart_item.food_item.food_title }}</h6>
                                                                 <span>{{ cart_item.food_item.description }}</span>
+                                                                <div>
+                                                                    <a href="{% url 'restaurant_detail_view' cart_item.food_item.vendor.vendor_slug %}"
+                                                                       class="badge badge-warning">{{ cart_item.food_item.vendor }}</a>
+                                                                </div>
                                                             </div>
                                                             <div class="price-holder" style="text-align: center;">
                                                                 <span class="price">{{ cart_item.food_item.price }} هزار تومان </span>
@@ -42,7 +48,9 @@
                                                                    data-url="{% url 'delete_cart' cart_item.food_item.pk %}">
                                                                     <i class="icon-delete text-color"></i>
                                                                 </a>
-                                                                <a href="{% url 'decrease_cart' cart_item.food_item.pk %}" class="decrease-cart float-right"
+                                                                <a href="{% url 'decrease_cart' cart_item.food_item.pk %}"
+                                                                   class="decrease-cart float-right"
+                                                                   id="{{ cart_item.food_item.pk }}"
                                                                    style="color: blue; margin-right: 15px;"
                                                                    data-id="{{ cart_item.food_item.pk }}"
                                                                    data-url="{% url 'decrease_cart' cart_item.food_item.pk %}">
@@ -97,7 +105,7 @@
                                                      هزار تومان
                                                  </span>
                                                  <span id="subtotal">
-                                                     0
+                                                     {{ subtotal }}
                                                  </span>
                                              </span>
                                                 </li>
@@ -109,12 +117,12 @@
                                                      هزار تومان
                                                  </span>
                                                  <span id="tax">
-                                                     0
+                                                     {{ tax }}
                                                  </span>
                                              </span>
                                                 </li>
                                                 <li style="list-style-type:none; margin-left: 9px;">
-                                                    discount
+                                                    {{ discount }}
                                                     <span class="price float-right" style="margin-right: 5px;">
                                                  <span class="currency">
                                                      %
@@ -131,7 +139,7 @@
                                                      هزار تومان
                                                  </span>
                                                  <span id="total">
-                                                     0
+                                                     {{ total }}
                                                  </span>
                                              </span>
                                                 </li>

@@ -9,6 +9,8 @@ class Category(models.Model):
     category_name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(max_length=250, blank=True)
+    parent_category = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True,
+                                        related_name='child_categories')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -5,7 +6,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404
 
-from market_place.context_processors import get_cart_counter
+from market_place.context_processors import get_cart_counter, get_cart_amount
 from market_place.models import Cart
 from menu.models import Category, FoodItem
 from vendor.models import Vendor
@@ -68,11 +69,12 @@ def add_to_cart_view(request, food_item_pk):
                     check_cart.save()
                     return JsonResponse(
                         {'status': 'success', 'message': 'Added extra one', 'cart_counter': get_cart_counter(request),
-                         'qty': check_cart.quantity})
-                except Cart.DoesNotExist:
+                         'qty': check_cart.quantity, 'cart_amount': get_cart_amount(request)})
+                except:
                     check_cart = Cart.objects.create(user=request.user, food_item=food_item, quantity=1)
                     return JsonResponse({'status': 'success', 'message': 'food added to cart',
-                                         'cart_counter': get_cart_counter(request), 'qty': check_cart.quantity})
+                                         'cart_counter': get_cart_counter(request), 'qty': check_cart.quantity,
+                                         'cart_amount': get_cart_amount(request)})
             except:
                 return JsonResponse({'status': 'failed', 'message': 'Invalid request food does not exist'})
         else:
@@ -85,30 +87,31 @@ def decrease_cart_view(request, food_item_pk):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             # check if food exists
             try:
-                food_item = get_object_or_404(FoodItem, pk=food_item_pk, is_available=True)
+                food_item = FoodItem.objects.get(pk=food_item_pk, is_available=True)
                 # check if already added to the cart
                 try:
                     check_cart = Cart.objects.get(user=request.user, food_item=food_item)
-                    # decrease quantity of food itemz
+                    # Decrease quantity of food item or delete
                     if check_cart.quantity > 1:
                         check_cart.quantity -= 1
                         check_cart.save()
                         return JsonResponse(
                             {'status': 'success', 'message': 'Decreased one', 'cart_counter': get_cart_counter(request),
-                             'qty': check_cart.quantity})
+                             'qty': check_cart.quantity, 'cart_amount': get_cart_amount(request)})
                     else:
                         check_cart.delete()
+                        check_cart.quantity = 0
                         return JsonResponse(
-                            {'status': 'success', 'message': 'Removed from cart', 'cart_counter': get_cart_counter(request),
-                             'qty': 0})
-                except Cart.DoesNotExist:
-                    return JsonResponse({'status': 'failed', 'message': 'Food item not in cart'})
-            except FoodItem.DoesNotExist:
-                return JsonResponse({'status': 'failed', 'message': 'Invalid request, food does not exist'})
+                            {'status': 'success', 'message': 'you do not have this item',
+                             'cart_counter': get_cart_counter(request),
+                             'qty': check_cart.quantity, 'cart_amount': get_cart_amount(request)})
+                except:
+                    return JsonResponse({'status': 'failed', 'message': 'you do not have this item'})
+            except:
+                return JsonResponse({'status': 'failed', 'message': 'Invalid request food does not exist'})
         else:
             return JsonResponse({'status': 'failed', 'message': 'Invalid request'})
-    return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})
-
+    return JsonResponse({'status': 'login_required', 'message': 'please login to continue'})
 
 
 def delete_cart_view(request, food_item_pk):
@@ -123,7 +126,7 @@ def delete_cart_view(request, food_item_pk):
                     check_cart.delete()
                     return JsonResponse(
                         {'status': 'success', 'message': 'Item removed from cart',
-                         'cart_counter': get_cart_counter(request)}
+                         'cart_counter': get_cart_counter(request), 'cart_amount': get_cart_amount(request)}
                     )
                 except Cart.DoesNotExist:
                     return JsonResponse({'status': 'failed', 'message': 'Item not found in cart'})
@@ -134,8 +137,9 @@ def delete_cart_view(request, food_item_pk):
     return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})
 
 
+@login_required(login_url='login')
 def cart_view(request):
-    cart_items = Cart.objects.filter(user=request.user)
+    cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
     context = {
         'cart_items': cart_items,
     }
