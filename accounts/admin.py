@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from accounts.models import User, UserProfile
+from accounts.models import User, Address
 
 
 class CustomUserAdmin(UserAdmin):
@@ -14,8 +14,14 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(User, CustomUserAdmin)
 
 
-@admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
-    # Define the fields to be displayed in the admin interface
-    # list_display = ('user', 'date_of_birth', 'phone_number', 'address')
-    pass
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('address', 'country', 'state', 'city')
+
+
+admin.site.register(Address, AddressAdmin)
+
+# @admin.register(UserProfile)
+# class UserProfileAdmin(admin.ModelAdmin):
+#     # Define the fields to be displayed in the admin interface
+#     # list_display = ('user', 'date_of_birth', 'phone_number', 'address')
+#     pass
