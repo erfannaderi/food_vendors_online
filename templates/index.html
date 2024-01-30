@@ -42,7 +42,8 @@
                                                         <!--location  target slider icon <span id="foodbakery_radius_location_open333"
                                                               class="foodbakery-radius-location"><i
                                                                 class="icon-target5"></i></span>-->
-                                                        <input type="text" name="address" class="location-field-text filter"
+                                                        <input type="text" name="address"
+                                                               class="location-field-text filter"
                                                                placeholder="All Locations" id="id_address">
                                                     </div>
                                                     <input type="hidden" name="lat" value="" id="id_latitude">
@@ -104,14 +105,14 @@
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                         <select name="radius" id="radius" style="height: 50px; color: rebeccapurple">
                                             <option value="" selected>CHOOSE RADIUS</option>
-                                            <option value="5" selected> 5km </option>
-                                            <option value="10" selected> 10km </option>
-                                            <option value="15" selected> 15km </option>
-                                            <option value="20" selected> 20km </option>
-                                            <option value="25" selected> 25km </option>
-                                            <option value="50" selected> 50km </option>
-                                            <option value="100" selected> 100km </option>
-                                            <option value="200" selected> 200km </option>
+                                            <option value="5" selected> 5km</option>
+                                            <option value="10" selected> 10km</option>
+                                            <option value="15" selected> 15km</option>
+                                            <option value="20" selected> 20km</option>
+                                            <option value="25" selected> 25km</option>
+                                            <option value="50" selected> 50km</option>
+                                            <option value="100" selected> 100km</option>
+                                            <option value="200" selected> 200km</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
@@ -148,9 +149,9 @@
                                     {% for vendor in vendors %}
                                         <li class="has-border">
                                             <figure>
-                                                {% if vendor.user_profile.profile_picture %}
+                                                {% if vendor.user.profile_picture %}
                                                     <a href="{% url 'restaurant-dashboard' %}"><img
-                                                            src="{{ vendor.user_profile.profile_picture.url }}"
+                                                            src="{{ vendor.user.profile_picture.url }}"
                                                             class="attachment-full size-full wp-post-image"
                                                             alt=""></a>
                                                 {% else %}
@@ -214,10 +215,10 @@
                                                 <div class="img-holder">
                                                     <figure><a href="#">
                                                         <figure><a href="#">
-                                                            {% if vendor.user_profile.profile_picture %}
+                                                            {% if vendor.user.profile_picture %}
 
                                                                 <img
-                                                                        src="{{ vendor.user_profile.profile_picture.url }}"
+                                                                        src="{{ vendor.user.profile_picture.url }}"
                                                                         class="img-thumb wp-post-image" alt="">
                                                             {% else %}
                                                                 <img src="{% static 'extra-images/listing-logo18.png' %}"
@@ -226,9 +227,15 @@
                                                             {% endif %}
                                                         </a>
                                                         </figure>
-                                                        <span class="restaurant-status close">
-													<em class="bookmarkRibbon"></em>Close
-												</span>
+                                                        {% if vendor.is_open %}
+                                                                <span class="restaurant-status Open">
+													            <em class="bookmarkRibbon"></em>Open
+												                 </span>
+                                                        {% else %}
+                                                            <span class="restaurant-status close">
+													        <em class="bookmarkRibbon"></em>Close
+												        </span>
+                                                        {% endif %}
                                                 </div>
                                                 <div class="text-holder">
                                                     <div class="post-title">
@@ -236,9 +243,9 @@
                                                             <a href="listing-detail.html">{{ vendor }}</a>
                                                         </h5>
                                                     </div>
-                                                    {% if vendor.user_profile.city and vendor.user_profile.state %}
+                                                    {% if vendor.user.address_set.city and vendor.user.address_set.state %}
                                                         <address><span>address</span>
-                                                            {{ vendor.user_profile.city }},{{ vendor.user_profile.state }}
+                                                            {{ vendor.user.address_set.city }},{{ vendor.user.address_set.state }}
                                                         </address>
                                                     {% endif %}
                                                 </div>

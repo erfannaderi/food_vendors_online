@@ -1,4 +1,4 @@
-from datetime import time
+from datetime import time, datetime, date
 
 from django.db import models
 
@@ -19,6 +19,35 @@ class Vendor(models.Model):
 
     def __str__(self):
         return self.vendor_name
+
+    def is_open(self):
+        today_date = date.today()
+        today_int = today_date.isoweekday()
+        if today_int == 6 or today_int == 7:
+            today_int -= 5
+        else:
+            today_int += 2
+        # addresses = Address.objects.filter(user=vendor)
+        current_opening_hours = OpeningHours.objects.filter(vendor=self, day=today_int)
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        is_open = True
+        for i in current_opening_hours:
+            if not i.is_closed:
+                start = str(datetime.strptime(i.from_hours, '%I:%M %p').time())
+                end = str(datetime.strptime(i.to_hours, '%I:%M %p').time())
+            # print("Start time:", start)
+            # print("End time:", end)
+            # print("Current time:", current_time)
+                if start < current_time < end and not i.is_closed:
+                    is_open = True
+                    break
+                else:
+                    is_open = False
+            else:
+                is_open = False
+        # print("Is open:", is_open)
+        return is_open
 
     def save(self, *args, **kwargs):
         if self.pk is not None:

@@ -1,15 +1,18 @@
+from datetime import date, datetime
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch, Q
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404
 
+from accounts.models import Address
 from market_place.context_processors import get_cart_counter, get_cart_amount
 from market_place.models import Cart
 from menu.models import Category, FoodItem
-from vendor.models import Vendor
+from vendor.models import Vendor, OpeningHours
 
 
 # Create your views here.
@@ -45,13 +48,30 @@ class RestaurantDetailView(DetailView):
                 queryset=FoodItem.objects.filter(is_available=True)
             )
         )
+        addresses = Address.objects.filter(user=vendor.user).prefetch_related(
+            Prefetch(
+                'user',
+                queryset=Vendor.objects.filter(is_approved=True)
+            )
+        )
+        opening_hours = OpeningHours.objects.filter(vendor=vendor)
         if self.request.user.is_authenticated:
             cart_items = Cart.objects.filter(user=self.request.user)
         else:
             cart_items = None
-
+        today_date = date.today()
+        today_int = today_date.isoweekday()
+        if today_int == 6 or today_int == 7:
+            today_int -= 5
+        else:
+            today_int += 2
+        # addresses = Address.objects.filter(user=vendor)
+        current_opening_hours = OpeningHours.objects.filter(vendor=vendor, day=today_int)
         context['categories'] = categories
         context['cart_items'] = cart_items
+        context['opening_hours'] = opening_hours
+        context['addresses'] = addresses
+        context['current_opening_hours'] = current_opening_hours
         return context
 
 

@@ -21,41 +21,52 @@
                                 <br><br>
                                 <h6>Address</h6>
                                 <br>
-                                <table class=" table new_address table-borderless" style="width: 500px;">
-                                    <thead>
-                                    <tr>
-                                        <th>Address</th>
-                                        <th>Country</th>
-                                        <th>State</th>
-                                        <th>City</th>
-                                        <th>Longitude</th>
-                                        <th>Latitude</th>
-                                        <th>Remove</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for address in addresses %}
-                                        <tr id="hour-{{ address.pk }}">
-                                            <td>
-                                                <b class="limited-content"
-                                                   data-content="{{ address.address }}">{{ address.address }}</b>
-                                                <button class="btn btn-primary show-popup">Read More</button>
-                                            </td>
+{#                            {% if vendor.user.address_set %}#}
+{#                                        {% if addresses %}#}
+{#                                            <div class="delivery-timing reviews-sortby">#}
+{##}
+{#                                                <ul>#}
+{#                                                    <li>#}
+{#                                                        <a href="#" class="reviews-sortby-active">#}
+{#                                                            <span>addresses</span> <i#}
+{#                                                                class="icon-chevron-small-down"></i>#}
+{#                                                        </a>#}
+{#                                                        <ul class="delivery-dropdown">#}
+{#                                                            {% for address in addresses %}#}
+{#                                                                <li><a href="#"><span#}
+{#                                                                        class="opend-day">{{ address }}</span> <span#}
+{#                                                                        class="opend-time"><small>:</small> {{ address.country }} - {{ address.state }}-{{ address.city }}</span></a>#}
+{#                                                                </li>#}
+{#                                                            {% endfor %}#}
+{#                                                        </ul>#}
+{#                                                    </li>#}
+{#                                                </ul>#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+{#                                    {% endif %}#}
+                                {% if vendor.user.address_set %}
+                                        {% if addresses %}
+                                            <div class="delivery-timing reviews-sortby">
 
-                                            <div class="popup-content" style="display: none;"></div>
-                                            <td>{{ address.country }}</td>
-                                            <td>{{ address.state }}</td>
-                                            <td>{{ address.city }}</td>
-                                            <td>{{ address.longitude }}</td>
-                                            <td>{{ address.latitude }}</td>
-                                            <td><a href="{% url 'remove_restaurant_profile_address' address.pk %}"
-                                                   class="btn btn-danger remove_address"
-                                                   data-url="{% url 'remove_restaurant_profile_address' address.pk %}">remove</a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#" class="reviews-sortby-active">
+                                                            <span>addresses</span> <i
+                                                                class="icon-chevron-small-down"></i>
+                                                        </a>
+                                                        <ul class="delivery-dropdown">
+                                                            {% for address in addresses %}
+                                                                <li><a href="#"><span
+                                                                        class="opend-day">{{ address }}</span> <span
+                                                                        class="opend-time"><small>:</small> {{ address.country }} - {{ address.state }}-{{ address.city }}</span></a>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
                                 <form id='new_address' action="{% url 'add_restaurant_profile_address' %}">
                                     {% csrf_token %}
                                     <div class="row">

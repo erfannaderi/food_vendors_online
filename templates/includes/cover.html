@@ -1,7 +1,7 @@
 {% load static %}
 <div class="page-section restaurant-detail-image-section"
      style=" background: url(
-             {% if restaurant.user_profile.cover_photos %}{{ restaurant.user_profile.cover_photos.url }}{% else %}{% static 'images/default-profile.PNG' %}{% endif %})  0 0 / cover;">
+             {% if restaurant.user.cover_photos %}{{ restaurant.user.cover_photos.url }}{% else %}{% static 'images/default-profile.PNG' %}{% endif %})  0 0 / cover;">
     <!-- Container Start -->
     <div class="container">
         <!-- Row Start -->
@@ -13,7 +13,7 @@
                         <div class="img-holder">
                             <figure>
                                 <img src="
-                                        {% if restaurant.user_profile.profile_picture %}{{ restaurant.user_profile.profile_picture.url }}{% else %}{% static 'images/default-cover.PNG' %}{% endif %}"
+                                        {% if restaurant.user.profile_picture %}{{ restaurant.user.profile_picture.url }}{% else %}{% static 'images/default-cover.PNG' %}{% endif %}"
                                      alt="a picture">
                             </figure>
                         </div>
@@ -21,9 +21,9 @@
                         <div class="text-holder">
                             <span class="restaurant-title">{{ restaurant.vendor_name }}</span>
                             <div class="text">
-                                {% if restaurant.user_profile.address %}
+                                {% if restaurant.user.address_set %}
                                 <i class="icon-location"></i>
-                                    <p> first address:{{ restaurant.user_profile.address }}</p>
+                                    <p> first address:{{ restaurant.user.address_set }}</p>
                                 {% endif %}
                             </div>
                         </div>
