@@ -38,6 +38,12 @@
                                             {{ form.description }}
                                         </div>
                                     </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="field-holder">
+                                            <label for="id_description">Sub category if any</label>
+                                            {{ form.parent_category }}
+                                        </div>
+                                    </div>
                                     {% for field in form %}
                                         {% if field.errors %}
                                             {% for error in field.errors %}

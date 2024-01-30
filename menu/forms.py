@@ -6,7 +6,7 @@ from menu.models import Category, FoodItem
 class CategoryMenuForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['category_name', 'description']
+        fields = ['category_name', 'description', 'parent_category']
 
 
 class FoodItemForm(forms.ModelForm):
