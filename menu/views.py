@@ -33,7 +33,7 @@ def food_items_by_category(request, pk=None):
     food_items = FoodItem.objects.filter(vendor=vendor, category=category)
     context = {
         "category": category,
-        'food_items': food_items
+        'food_items': food_items,
     }
     return render(request, 'vendor/food_items_by_category.html', context)
 
@@ -43,19 +43,21 @@ def food_items_by_category(request, pk=None):
 def food_category_add(request):
     if request.method == 'POST':
         form = CategoryMenuForm(request.POST)
+        form.fields['parent_category'].queryset = Category.objects.filter(vendor=get_vendor(request))
         if form.is_valid():
             category_name = form.cleaned_data['category_name']
             category = form.save(commit=False)
+            category.vendor = get_vendor(request)
             category_pk = category.pk
             hashed_user_id = hashlib.sha256(str(category_pk).encode('utf-8')).hexdigest()
             encrypted_slug = f"{slugify(category_name)}-{hashed_user_id}"
-            category.vendor = get_vendor(request)
             category.slug = encrypted_slug
             form.save()
             messages.success(request, "Category has been added")
             return redirect('menu_builder')
     else:
         form = CategoryMenuForm()
+        form.fields['parent_category'].queryset = Category.objects.filter(vendor=get_vendor(request))
     context = {
         'form': form,
     }
@@ -68,9 +70,11 @@ def food_category_update(request, pk=None):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
         form = CategoryMenuForm(request.POST, instance=category)
+        form.fields['parent_category'].queryset = Category.objects.filter(vendor=get_vendor(request))
         if form.is_valid():
             category_name = form.cleaned_data['category_name']
             category = form.save(commit=False)
+            category.vendor = get_vendor(request)
             category.vendor = get_vendor(request)
             category_pk = category.pk
             hashed_user_id = hashlib.sha256(str(category_pk).encode('utf-8')).hexdigest()
@@ -81,6 +85,7 @@ def food_category_update(request, pk=None):
             return redirect('menu_builder')
     else:
         form = CategoryMenuForm(instance=category)
+        form.fields['parent_category'].queryset = Category.objects.filter(vendor=get_vendor(request))
     context = {
         'form': form,
         'category': category,

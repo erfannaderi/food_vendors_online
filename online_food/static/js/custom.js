@@ -290,7 +290,99 @@ $(document).ready(function () {
             }
         })
     })
+    //address jquery
+    $('.add_address').on('click', function (e) {
+        e.preventDefault();
+        var address = $('#id_address').val();
+        var country = $('#id_country').val();
+        var state = $('#id_state').val();
+        var city = $('#id_city').val();
+        var pin_code = $('#id_pin_code').val();
+        var latitude = $('#id_latitude').val();
+        var longitude = $('#id_longitude').val();
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        var url = $('#add_address_url').val();
+        console.log(address, country, state, city, pin_code, latitude, longitude, csrf);
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                'address': address,
+                'country': country,
+                'state': state,
+                'city': city,
+                'pin_code': pin_code,
+                'latitude': latitude,
+                'longitude': longitude,
+                'csrfmiddlewaretoken': csrf,
+            },
+            success: function (response) {
+                // Handle the success response
+                if (response.status === 'success') {
+                    // Append the new address row to the table
+                    var newRow = '<tr id="address-' + response.pk + '">' +
+                        '<td><b>' + response.address + '</b></td>' +
+                        '<td>' + response.country + '</td>' +
+                        '<td>' + response.state + '</td>' +
+                        '<td>' + response.city + '</td>' +
+                        '<td>' + response.longitude + '</td>' +
+                        '<td>' + response.latitude + '</td>' +
+                        '<td><a href="#" class="btn btn-danger remove_address" ' +
+                        'data-url="' + response.remove_url + '">remove</a></td>' +
+                        '</tr>';
+                    $('.new_address tbody').append(newRow);
 
+                    // Clear the form fields
+                    $('#new_address')[0].reset();
+                } else {
+                    // Handle the error response
+                    console.error(response.message);
+                }
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                swal('Error', 'An error occurred while adding opening hours', 'error');
+            }
+        });
+    });
+    // delete address
+    $(document).on('click', '.remove_address', function (e) {
+        e.preventDefault();
+        var url = $(this).attr('data-url');
+        var $addressElement = $(this).closest('.address-row'); // Assuming the address element has a parent element with class 'address-row'
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (response) {
+                if (response.status === 'success') {
+                    $addressElement.remove(); // Remove the address element from the DOM
+                }
+            }
+        });
+    });
+    //add popup to address
+    $(document).ready(function () {
+        // Limit the display of the limited-content elements
+        $('.limited-content').each(function () {
+            var content = $(this).data('content');
+            var limit = 50; // Define the limit of characters to display
+
+            if (content.length > limit) {
+                var limitedText = content.substring(0, limit) + '...';
+                $(this).text(limitedText);
+            }
+        });
+
+        // Show the pop-up when the Read More button is clicked
+        $('.show-popup').on('click', function () {
+            var content = $(this).prev('.limited-content').data('content');
+            $('.popup-content').text(content);
+            // Display the pop-up
+            // You can use a modal or any other method to show the pop-up
+            $('.popup-content').show();
+        });
+    });
     //closeing jquery
 });
 //

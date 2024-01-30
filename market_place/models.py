@@ -1,15 +1,18 @@
 from django.db import models
-
+from django.utils.translation import gettext_lazy as _
 from accounts.models import User
 from menu.models import FoodItem
 
 
 # Create your models here.
 class Discount(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     discount_code = models.CharField(max_length=50)
     discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Discount Percentage (%)')
+    minimum = models.DecimalField(max_digits=5, decimal_places=2, default=10)
+    maximum = models.DecimalField(max_digits=12, decimal_places=2, default=800)
     start_date = models.DateField()
+    counter = models.IntegerField(default=0)
     end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -36,8 +39,8 @@ class Tax(models.Model):
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = 'tax'
-        verbose_name_plural = 'taxes'
+        verbose_name = _('tax')
+        verbose_name_plural = _('taxes')
 
     def __str__(self):
         return self.tax_type

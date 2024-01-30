@@ -14,7 +14,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.views.generic import CreateView
 from accounts.forms import RegisterClientForm
-from accounts.models import User, UserProfile
+from accounts.models import User, Address
 from accounts.utils import detect_user, send_verification_email
 from vendor.forms import RestaurantForm
 from vendor.models import Vendor
@@ -179,8 +179,8 @@ def register_restaurant(request):
                 hashed_user_id = hashlib.sha256(str(user_id).encode('utf-8')).hexdigest()
                 encrypted_slug = f"{slugify(vendor_name)}-{hashed_user_id}"
                 restaurant.vendor_slug = encrypted_slug
-                user_profile = UserProfile.objects.get(user=user)
-                restaurant.user_profile = user_profile
+                # user_address = Address.objects.get(user=user)
+                # restaurant.address = user_address
                 restaurant.save()
                 mail_subject = 'Verify your email address'
                 email_template = 'accounts/emails/accounts_email_verification.html'

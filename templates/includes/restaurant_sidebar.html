@@ -4,8 +4,12 @@
             <li class="{% if 'restaurant-dashboard' in request.path or '/restaurant/' == request.path %} active {% endif %}">
                 <a href="{% url 'restaurant-dashboard' %}"><i
                         class="icon-dashboard3"></i>Dashboard</a></li>
-            <li class="{% if 'profile' in request.path %} active {% endif %}"><a
+            <li class="{% if 'restaurant/profile' == request.path %} active {% endif %}"><a
                     href="{% url 'restaurant_profile' %}"><i class="icon-building "></i>My Restaurant</a>
+            </li>
+            <li class="{% if '/restaurant/profile/address' == request.path %} active {% endif %}"><a
+                    href="{% url 'restaurant_profile_address' %}"><i class="icon-address-book "></i>My Restaurant
+                Address</a>
             </li>
             <li class="{% if 'menu-builder' in request.path %} active {% endif %}"><a href="{% url 'menu_builder' %}"><i
                     class="icon-menu5"></i>Menu

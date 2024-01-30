@@ -33,6 +33,7 @@
                                                                                      src="
                                                                                              
                                                                                              
+                                                                                             
                                                                                              {% if restaurant.user_profile.profile_picture %}{{ restaurant.user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.PNG' %}{% endif %}"
                                                                                      alt="Profile Picture">
                                                                             </div>
@@ -59,6 +60,7 @@
                                                                                 <img class="thumbnail"
                                                                                      src="                                                                                             
                                                                                              
+                                                                                             
                                                                                              {% if restaurant.user_profile.cover_photos %}{{ restaurant.user_profile.cover_photos.url }}{% else %}{% static 'images/default-cover.PNG' %}{% endif %}"
                                                                                 >
                                                                             </div>
@@ -84,6 +86,7 @@
                                                                             <div class="item-thumb">
                                                                                 <img class="thumbnail"
                                                                                      src="                                                                                             
+                                                                                             
                                                                                              {% if restaurant.vendor_license %}{{ restaurant.vendor_license.url }}{% else %}{% static 'images/default-profile.PNG' %}{% endif %}"
                                                                                 >
                                                                             </div>
@@ -106,51 +109,6 @@
                                                             {{ restaurant_form.vendor_name }}
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="field-holder">
-                                                            <label>address *</label>
-                                                            {{ profile_form.address }}
-                                                            <small class="text-muted float-right">powered by
-                                                                google and erfan :D</small>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                        <div class="field-holder">
-                                                            <label>country</label>
-                                                            {{ profile_form.country }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                        <div class="field-holder">
-                                                            <label>state</label>
-                                                            {{ profile_form.state }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                        <div class="field-holder">
-                                                            <label>city</label>
-                                                            {{ profile_form.city }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                        <div class="field-holder">
-                                                            <label>pin code</label>
-                                                            {{ profile_form.pin_code }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                        <div class="field-holder">
-                                                            <label>latitude</label>
-                                                            {{ profile_form.latitude }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                        <div class="field-holder">
-                                                            <label>longitude</label>
-                                                            {{ profile_form.longitude }}
-                                                        </div>
-                                                    </div>
-
                                                 </div>
                                             </li>
                                         </ul>
