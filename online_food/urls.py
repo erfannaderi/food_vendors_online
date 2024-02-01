@@ -27,7 +27,7 @@ urlpatterns = [
                   path('', HomePageView.as_view(), name='homepage'),
                   path('', include('accounts.urls')),
                   path('market-place/', include('market_place.urls')),
-                  path('', include('allauth.urls')),
+                  # path('', include('allauth.urls')),
                   path('favicon.ico', HomePageView.as_view()),
                   # cart
                   path('cart/', cart_view, name='cart_view'),

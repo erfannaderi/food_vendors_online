@@ -2,7 +2,7 @@ from django import forms
 
 from accounts.models import Address, User
 # from accounts.validators import allow_images_only_validator
-from vendor.models import Vendor, OpeningHours
+from vendor.models import Vendor, OpeningHours, Staff
 
 
 class RestaurantForm(forms.ModelForm):
@@ -16,7 +16,7 @@ class RestaurantForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Start typing...', 'required': 'required'}))
+    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Start typing...'}))
     profile_picture = forms.ImageField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}))
     # we can use ImageField instead of FileField for django automatic
     # validation, but since we have custom validation, we use the FileField
@@ -46,6 +46,8 @@ class OpeningHoursForm(forms.ModelForm):
     class Meta:
         model = OpeningHours
         fields = ['day', 'from_hours', 'to_hours', 'is_closed']
+
+
 from django import forms
 
 from accounts.models import Address, User
@@ -59,8 +61,6 @@ class RestaurantForm(forms.ModelForm):
     class Meta:
         model = Vendor
         fields = ['vendor_name', "vendor_license"]
-        # verbose_name = "Vendor"
-        # verbose_name_plural = "Vendors"
 
 
 class UserProfileForm(forms.ModelForm):
@@ -94,3 +94,9 @@ class OpeningHoursForm(forms.ModelForm):
     class Meta:
         model = OpeningHours
         fields = ['day', 'from_hours', 'to_hours', 'is_closed']
+
+
+class StaffForm(forms.ModelForm):
+    class Meta:
+        model = Staff
+        fields = ['user', 'vendor', 'role']

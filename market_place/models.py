@@ -2,10 +2,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
 from menu.models import FoodItem
+from online_food.models import BaseModel
 
 
 # Create your models here.
-class Discount(models.Model):
+class Discount(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     discount_code = models.CharField(max_length=50)
     discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Discount Percentage (%)')
@@ -16,27 +17,30 @@ class Discount(models.Model):
     end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username}'s Discount ({self.discount_code})"
 
 
-class Cart(models.Model):
+class Cart(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     quantity = models.SmallIntegerField()
     discount = models.ForeignKey(Discount, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.user
 
 
-class Tax(models.Model):
+class Tax(BaseModel):
     tax_type = models.CharField(max_length=20, unique=True, db_index=True)
     tax_percentage = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Tax Percentage (%)')
     is_active = models.BooleanField(default=True)
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _('tax')

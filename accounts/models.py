@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.db.models import OneToOneField
 
+from online_food.models import BaseModel
+
 
 # from django.utils.translation import gettext_lazy as _
 
@@ -114,7 +116,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 #         return self.user.email
 
 
-class Address(models.Model):
+class Address(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=250, blank=True, null=True)
     country = models.CharField(max_length=20, blank=True, null=True)
@@ -125,6 +127,7 @@ class Address(models.Model):
     longitude = models.CharField(max_length=20, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.address

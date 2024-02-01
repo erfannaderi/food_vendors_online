@@ -3,7 +3,8 @@ from accounts.views import restaurant_dashboard, my_account
 from menu.views import food_category_add, food_items_by_category, menu_builder, food_category_update, \
     food_category_delete, food_item_add, food_item_update, food_item_delete
 from vendor.views import restaurant_profile, opening_hours_views, add_opening_hours_views, remove_opening_hours_views, \
-    restaurant_profile_address, add_restaurant_profile_address, remove_restaurant_profile_address
+    restaurant_profile_address, add_restaurant_profile_address, remove_restaurant_profile_address, \
+    choose_staff_and_restaurant
 
 urlpatterns = [
     path('', restaurant_dashboard, name='restaurant'),
@@ -30,4 +31,6 @@ urlpatterns = [
     path('profile/address/add', add_restaurant_profile_address, name='add_restaurant_profile_address'),
     path('profile/address/remove/<int:pk>', remove_restaurant_profile_address,
          name='remove_restaurant_profile_address'),
+    # staff
+    path('staff-register', choose_staff_and_restaurant, name='staff_register'),
 ]

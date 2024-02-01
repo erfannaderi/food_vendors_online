@@ -30,8 +30,7 @@
                                                                         <div class="drag-list">
                                                                             <div class="item-thumb">
                                                                                 <img class="thumbnail"
-                                                                                     src="
-                                                                                             
+                                                                                     src="      
                                                                                              
                                                                                              
                                                                                              {% if restaurant.user.profile_picture %}{{ restaurant.user.profile_picture.url }}{% else %}{% static 'images/default-profile.PNG' %}{% endif %}"
@@ -61,6 +60,9 @@
                                                                                      src="                                                                                             
                                                                                              
                                                                                              
+                                                                                             
+                                                                                             
+                                                                                             
                                                                                              {% if restaurant.user.cover_photos %}{{ restaurant.user.cover_photos.url }}{% else %}{% static 'images/default-cover.PNG' %}{% endif %}"
                                                                                 >
                                                                             </div>
@@ -87,6 +89,9 @@
                                                                                 <img class="thumbnail"
                                                                                      src="                                                                                             
                                                                                              
+                                                                                             
+                                                                                             
+                                                                                             
                                                                                              {% if restaurant.vendor_license %}{{ restaurant.vendor_license.url }}{% else %}{% static 'images/default-profile.PNG' %}{% endif %}"
                                                                                 >
                                                                             </div>
@@ -109,6 +114,15 @@
                                                             {{ restaurant_form.vendor_name }}
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="field-holder">
+                                                            <label>enter yes to save changes</label>
+                                                            {{ profile_form.address }}
+                                                        </div>
+                                                    </div>
+                                                    {% if profile_form.errors %}
+                                                        {{ profile_form.errors }}
+                                                    {% endif %}
                                                 </div>
                                             </li>
                                         </ul>

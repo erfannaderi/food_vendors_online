@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import User, Address
 # from accounts.models import UserProfile
 from accounts.views import check_role_vendor
-from vendor.forms import RestaurantForm, UserProfileForm, OpeningHoursForm, UserAddressForm
+from vendor.forms import RestaurantForm, UserProfileForm, OpeningHoursForm, UserAddressForm, StaffForm
 from vendor.models import Vendor, OpeningHours
 
 
@@ -117,9 +117,9 @@ def add_restaurant_profile_address(request):
                                 'longitude': address.longitude}
                     return JsonResponse(response)
             except:
-                    response = {'status': 'failed',
-                                "message": ''}
-                    return JsonResponse(response)
+                response = {'status': 'failed',
+                            "message": ''}
+                return JsonResponse(response)
             else:
                 pass
 
@@ -140,3 +140,15 @@ def remove_restaurant_profile_address(request, pk=None):
             hour = get_object_or_404(Address, pk=pk)
             hour.delete()
             return JsonResponse({'status': 'success', 'pk': pk})
+
+
+def choose_staff_and_restaurant(request):
+    if request.method == 'POST':
+        form = StaffForm(request.POST)
+        if form.is_valid():
+            staff = form.save()
+            staff.role.save()
+            return redirect('login')
+    else:
+        form = StaffForm()
+    return render(request, 'vendor/choose_staff_and_restaurant.html', {'form': form})
