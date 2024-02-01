@@ -2,6 +2,7 @@
 from django.test import TestCase
 from accounts.models import User, Address
 
+
 class UserTestCase(TestCase):
     def test_create_user(self):
         user = User.objects.create_user(
@@ -28,6 +29,7 @@ class UserTestCase(TestCase):
         self.assertTrue(superuser.is_admin)
         self.assertTrue(superuser.is_staff)
         self.assertTrue(superuser.is_superuser)
+
 
 class AddressTestCase(TestCase):
     def test_address_creation(self):

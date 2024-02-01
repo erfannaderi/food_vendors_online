@@ -136,6 +136,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+TRANSLATIONS_PROJECT_BASE_DIR = BASE_DIR
+LOCALE_PATHS = [BASE_DIR.joinpath('local')]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -183,5 +185,6 @@ GRAPH_MODELS = {
     "all_applications": True,
     "group_models": True,
 }
-# python manage.py graph_models --pydot -a -g -o my_project_visualized.png
+# python manage.py graph_models --pydot -a -g -o online_food.png
+# python manage.py makemessages --all
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
